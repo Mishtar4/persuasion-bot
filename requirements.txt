@@ -1,5 +1,6 @@
-aiogram>=3.0
-transformers
-torch
-numpy
-sentencepiece
+aiogram>=3.28
+numpy>=2.4
+python-dotenv>=1.2
+sentencepiece>=0.2
+torch>=2.12
+transformers>=5.10
