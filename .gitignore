@@ -1,0 +1,6 @@
+.env
+model/
+user_langs.json
+venv/
+__pycache__/
+*.pyc
