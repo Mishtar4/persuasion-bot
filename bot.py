@@ -46,9 +46,11 @@ STRINGS = {
             "O modelu:\n\n"
             "Model: XLM-RoBERTa-large\n"
             "Zadanie: wykrywanie technik perswazji na poziomie akapitu (multi-label)\n"
-            "Dane: SemEval 2023 Task 3 — ok. 20k akapitów w 6 językach\n"
+            "Dane: SemEval 2023 Task 3 — ok. 20k akapitów w 9 językach\n"
             "Dokładność: micro-F1 ≈ 0.45 na polskim zbiorze testowym\n"
             "Klas: 23 techniki"
+            "GitHub: https://github.com/Mishtar4/persuasion-bot\n"
+            "Model: https://huggingface.co/Mishtar4/persuasion-detector-xlm-roberta"
         ),
     },
     "ua": {
@@ -70,9 +72,11 @@ STRINGS = {
             "Про модель:\n\n"
             "Модель: XLM-RoBERTa-large\n"
             "Завдання: виявлення технік переконання на рівні абзацу (multi-label)\n"
-            "Дані: SemEval 2023 Task 3 — блол 20k абзаців у 6 мовах\n"
+            "Дані: SemEval 2023 Task 3 — блол 20k абзаців у 9 мовах\n"
             "Точність: micro-F1 ≈ 0.45 на польському тестовому наборі\n"
             "Класів: 23 техніки"
+            "GitHub: https://github.com/Mishtar4/persuasion-bot\n"
+            "Модель: https://huggingface.co/Mishtar4/persuasion-detector-xlm-roberta"
         ),
     },
 }
