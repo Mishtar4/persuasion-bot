@@ -17,7 +17,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
-from locales import STRINGS, OPISY
+from locales import STRINGS, OPISY, EXAMPLES
 
 # ============ CONFIGURATION ============
 BOT_TOKEN      = os.getenv("BOT_TOKEN")
@@ -158,8 +158,8 @@ async def set_language(callback: CallbackQuery):
     await callback.message.answer(s["start"])
     await callback.answer()
 
-@dp.message(Command("help"))
-async def help_cmd(message: Message):
+@dp.message(Command("techniques"))
+async def techniques_cmd(message: Message):
     lang = get_lang(message.from_user.id)
     if lang is None:
         await message.answer(LANG_CHOOSE_TEXT, reply_markup=lang_keyboard())
@@ -173,8 +173,20 @@ async def help_cmd(message: Message):
     for i in range(0, len(tekst), TG_LIMIT):
         await message.answer(tekst[i:i + TG_LIMIT])
 
-@dp.message(Command("about"))
-async def about_cmd(message: Message):
+@dp.message(Command("example"))
+async def example_cmd(message: Message):
+    lang = get_lang(message.from_user.id)
+    if lang is None:
+        await message.answer(LANG_CHOOSE_TEXT, reply_markup=lang_keyboard())
+        return
+    s = STRINGS[lang]
+    przyklad = EXAMPLES[lang]
+    await message.answer(f"{s['example_intro']}\n\n{przyklad}")
+    wynik = await asyncio.to_thread(analizuj, przyklad, lang)
+    await message.answer(f"{s['example_result_intro']}\n\n{wynik}")
+
+@dp.message(Command("model"))
+async def model_cmd(message: Message):
     lang = get_lang(message.from_user.id)
     if lang is None:
         await message.answer(LANG_CHOOSE_TEXT, reply_markup=lang_keyboard())

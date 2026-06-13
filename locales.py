@@ -1,7 +1,7 @@
 # ============ UI STRINGS ============
 STRINGS = {
     "pl": {
-        "start":        "Cześć! Wyślij mi tekst, a wykryję w nim techniki perswazji akapit po akapicie.\n\nOddziel akapity pustą linią.\n\nKomendy:\n/help — lista wszystkich technik\n/about - informacja dotycząca modelu\n/language — zmień język",
+        "start":        "Cześć! Wyślij mi tekst, a wykryję w nim techniki perswazji akapit po akapicie.\n\nOddziel akapity pustą linią.\n\nKomendy:\n/example — przykład działania bota\n/techniques — lista wszystkich technik\n/model — informacja dotycząca modelu\n/language — zmień język\n\n💡 Nie wiesz, jak to działa? Napisz /example, aby zobaczyć przykład.",
         "analyzing":    "Analizuję…",
         "no_text":      "Nie znalazłem tekstu do analizy.",
         "no_technique": "— brak wykrytych technik",
@@ -15,6 +15,13 @@ STRINGS = {
         "error":        "Wystąpił błąd podczas analizy. Spróbuj ponownie za chwilę.\nJeśli problem się powtarza, skróć tekst lub podziel go na mniejsze części.",
         "lang_choose":  "Wybierz język / Оберіть мову:",
         "lang_set":     "Język ustawiony na: Polski 🇵🇱",
+        "example_intro": (
+            "📌 Przykład działania bota\n\n"
+            "Wyślij tekst podzielony na akapity — każdy akapit oddziel pustą linią "
+            "(wciśnij Enter dwa razy). Bot analizuje każdy akapit osobno.\n\n"
+            "Przykładowy tekst:"
+        ),
+        "example_result_intro": "Wynik analizy:",
         "about": (
             "O modelu:\n\n"
             "Model: XLM-RoBERTa-large\n"
@@ -27,7 +34,7 @@ STRINGS = {
         ),
     },
     "uk": {
-        "start":        "Привіт! Надішли мені текст, і я знайду в ньому техніки переконання абзац за абзацом.\n\nРозділяй абзаци порожнім рядком.\n\nКоманди:\n/help — список усіх технік\n/about - інформація про модель\n/language — змінити мову",
+        "start":        "Привіт! Надішли мені текст, і я знайду в ньому техніки переконання абзац за абзацом.\n\nРозділяй абзаци порожнім рядком.\n\nКоманди:\n/example — приклад роботи бота\n/techniques — список усіх технік\n/model — інформація про модель\n/language — змінити мову\n\n💡 Не знаєш, як це працює? Напиши /example, щоб побачити приклад.",
         "analyzing":    "Аналізую…",
         "no_text":      "Не знайшов тексту для аналізу.",
         "no_technique": "— технік не виявлено",
@@ -41,6 +48,13 @@ STRINGS = {
         "error":        "Виникла помилка під час аналізу. Спробуй ще раз.\nЯкщо проблема повторюється — скороти текст або розбий на менші частини.",
         "lang_choose":  "Wybierz język / Оберіть мову:",
         "lang_set":     "Мову встановлено: Українська 🇺🇦",
+        "example_intro": (
+            "📌 Приклад роботи бота\n\n"
+            "Надішли текст, поділений на абзаци — кожен абзац відділяй порожнім рядком "
+            "(натисни Enter двічі). Бот аналізує кожен абзац окремо.\n\n"
+            "Приклад тексту:"
+        ),
+        "example_result_intro": "Результат аналізу:",
         "about": (
             "Про модель:\n\n"
             "Модель: XLM-RoBERTa-large\n"
@@ -106,4 +120,20 @@ OPISY = {
         "Appeal_to_Hypocrisy":              'відповідь на звинувачення тим, що співрозмовник сам так робить — «сам не без гріха»',
         "Questioning_the_Reputation":       'атака на репутацію людини замість її аргументів — «хто ти такий, щоб висловлюватись?»',
     },
+}
+
+# ============ /example SAMPLE TEXT ============
+EXAMPLES = {
+    "pl": (
+        "Wszyscy eksperci są przekupieni i mówią tylko to, co im się kazano powiedzieć - "
+        "prawdziwa prawda jest zupełnie inna.\n\n"
+        "Jeśli teraz nie podejmiesz działania, stracisz wszystko, na czym ci zależy - "
+        "czas niemal się skończył."
+    ),
+    "uk": (
+        "Усі експерти продажні й кажуть лише те, що їм наказали - "
+        "справжня правда зовсім інша.\n\n"
+        "Якщо ти не діятимеш зараз, втратиш усе, що тобі дороге - "
+        "часу майже не залишилося."
+    ),
 }
