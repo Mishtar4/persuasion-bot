@@ -4,7 +4,7 @@ Telegram bot that detects 23 persuasion techniques in text using a fine-tuned XL
 
 ## Demo
 
-> Bot is currently offline — deployment in progress.
+> Bot runs locally. Cloud deployment coming soon.
 
 ## How it works
 
