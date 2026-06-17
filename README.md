@@ -15,7 +15,7 @@ Telegram bot that detects 23 persuasion techniques in text using a fine-tuned XL
 
 ## Model
 
-Fine-tuned on SemEval 2023 Task 3 dataset (9 languages, ~19,900 training paragraphs).  
+Fine-tuned on SemEval 2023 Task 3 dataset (6 languages, ~19,900 training paragraphs).  
 Micro-F1 ≈ 0.45 on Polish dev set.
 
 👉 [Mishtar4/persuasion-detector-xlm-roberta](https://huggingface.co/Mishtar4/persuasion-detector-xlm-roberta) on HuggingFace
@@ -25,6 +25,7 @@ Micro-F1 ≈ 0.45 on Polish dev set.
 ```
 persuasion-bot/
 ├── bot.py                  # Telegram bot (aiogram 3.x)
+├── locales.py              # Localization
 ├── requirements.txt        # Python dependencies
 ├── .env.example            # Environment variables template
 ├── notebooks/
