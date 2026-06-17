@@ -25,6 +25,7 @@ Micro-F1 ≈ 0.45 on Polish dev set.
 ```
 persuasion-bot/
 ├── bot.py                  # Telegram bot (aiogram 3.x)
+├── locales.py              # Localization
 ├── requirements.txt        # Python dependencies
 ├── .env.example            # Environment variables template
 ├── notebooks/
