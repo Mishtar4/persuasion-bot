@@ -24,10 +24,14 @@ Micro-F1 ≈ 0.45 on Polish dev set.
 
 ```
 persuasion-bot/
-├── bot.py              # Telegram bot (aiogram 3.x)
-├── requirements.txt    # Python dependencies
-├── .env.example        # Environment variables template
-└── model/              # Model files (download from HuggingFace, see below)
+├── bot.py                  # Telegram bot (aiogram 3.x)
+├── requirements.txt        # Python dependencies
+├── .env.example            # Environment variables template
+├── notebooks/
+│   ├── 1_dane.ipynb        # Data preparation (SemEval 2023)
+│   ├── 2_model.ipynb       # Fine-tuning XLM-RoBERTa
+│   └── 3_analiza.ipynb     # Threshold tuning + analysis
+└── model/                  # Model files (download from HuggingFace, see below)
     ├── model.safetensors
     ├── config.json
     ├── tokenizer.json
@@ -35,6 +39,8 @@ persuasion-bot/
     ├── labels.txt
     └── thresholds.npy
 ```
+
+
 
 ## Installation
 
