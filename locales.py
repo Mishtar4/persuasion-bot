@@ -66,6 +66,39 @@ STRINGS = {
             "Модель: https://huggingface.co/Mishtar4/persuasion-detector-xlm-roberta"
         ),
     },
+    "en": {
+        "start":        "Hi! Send me a text and I'll detect persuasion techniques in it, paragraph by paragraph.\n\nSeparate paragraphs with a blank line.\n\nCommands:\n/example — see the bot in action\n/techniques — list of all techniques\n/model — info about the model\n/language — change language\n\n💡 Not sure how it works? Type /example to see a demo.",
+        "analyzing":    "Analyzing…",
+        "no_text":      "No text found to analyze.",
+        "no_technique": "— no techniques detected",
+        "legend_title": "ℹ️ What the detected techniques mean:",
+        "paragraph":    "Paragraph",
+        "confidence":   "confidence",
+        "high":         "high",
+        "medium":       "medium",
+        "low":          "low",
+        "help_title":   "23 persuasion techniques I can detect:",
+        "error":        "An error occurred during analysis. Please try again shortly.\nIf the problem persists, shorten the text or split it into smaller parts.",
+        "lang_choose":  "Wybierz język / Оберіть мову / Choose language:",
+        "lang_set":     "Language set to: English 🇬🇧",
+        "example_intro": (
+            "📌 Example of how the bot works\n\n"
+            "Send a text split into paragraphs — separate each paragraph with a blank line "
+            "(press Enter twice). The bot analyzes each paragraph separately.\n\n"
+            "Sample text:"
+        ),
+        "example_result_intro": "Analysis result:",
+        "about": (
+            "About the model:\n\n"
+            "Model: XLM-RoBERTa-large\n"
+            "Task: paragraph-level persuasion technique detection (multi-label)\n"
+            "Data: SemEval 2023 Task 3 — ~20k paragraphs in 6 languages\n"
+            "Accuracy: micro-F1 ≈ 0.45 on the Polish test set\n"
+            "Classes: 23 techniques\n"
+            "GitHub: https://github.com/Mishtar4/persuasion-bot\n"
+            "Model: https://huggingface.co/Mishtar4/persuasion-detector-xlm-roberta"
+        ),
+    },
 }
 
 # ============ TECHNIQUE DESCRIPTIONS ============
@@ -120,6 +153,31 @@ OPISY = {
         "Appeal_to_Hypocrisy":              'вказівка на те, що інша сторона сама діє так, як критикує',
         "Questioning_the_Reputation":       'коментар стосується репутації чи характеру особи, а не суті її аргументів',
     },
+    "en": {
+        "Appeal_to_Authority":              'citing the opinion of a known or recognized person/institution to support a claim',
+        "Appeal_to_Popularity":             'reinforcing a claim with information that many people think or do the same',
+        "Appeal_to_Values":                 'appealing to values (patriotism, family, tradition) as an argument, alongside or instead of facts',
+        "Appeal_to_Fear-Prejudice":         'appealing to the audience\'s fears, concerns, or prejudices to support the message',
+        "Flag_Waving":                      'appealing to national or group pride, dividing into "us" and "them"',
+        "Causal_Oversimplification":        'attributing a complex problem to a single cause, even though there may be several',
+        "False_Dilemma-No_Choice":          'presenting a situation as a choice between only two options, even though more may exist',
+        "Consequential_Oversimplification": 'assuming that one event will inevitably lead to a chain of further consequences',
+        "Straw_Man":                        'presenting someone\'s position in a simplified or exaggerated form before criticizing it',
+        "Red_Herring":                      'introducing a topic into the conversation that diverts attention from the main issue',
+        "Whataboutism":                     'responding to criticism by pointing to similar behavior on the other side',
+        "Slogans":                          'a short, memorable phrase that conveys the main idea without developed argumentation',
+        "Appeal_to_Time":                   'emphasizing limited time to make a decision or take action',
+        "Conversation_Killer":              'a phrase meant to end discussion on a topic, e.g. "this is not up for debate"',
+        "Loaded_Language":                  'using words with strong emotional connotation that intensify the message',
+        "Repetition":                       'repeating the same message multiple times',
+        "Exaggeration-Minimisation":        'presenting something as bigger/more important or smaller/less significant than the facts suggest',
+        "Obfuscation-Vagueness-Confusion":  'using unclear, complex language that makes the message hard to understand precisely',
+        "Name_Calling-Labeling":            'using a label or term for a person or group instead of addressing their arguments',
+        "Doubt":                            'expressing doubt about the credibility or competence of a person or source',
+        "Guilt_by_Association":             'linking a person or idea to another person or group to influence how it is perceived',
+        "Appeal_to_Hypocrisy":              'pointing out that the other side behaves in a way they themselves criticize',
+        "Questioning_the_Reputation":       'a comment about a person\'s reputation or character rather than the substance of their arguments',
+    },
 }
 
 # ============ /example SAMPLE TEXT ============
@@ -135,5 +193,11 @@ EXAMPLES = {
         "справжня правда зовсім інша.\n\n"
         "Якщо ти не діятимеш зараз, втратиш усе, що тобі дороге - "
         "часу майже не залишилося."
+    ),
+    "en": (
+        "All experts are bought and only say what they've been told to say - "
+        "the real truth is completely different.\n\n"
+        "If you don't act now, you'll lose everything you care about - "
+        "time is almost up."
     ),
 }

@@ -134,9 +134,10 @@ def lang_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text="Polski \U0001f1f5\U0001f1f1", callback_data="lang_pl"),
         InlineKeyboardButton(text="Українська \U0001f1fa\U0001f1e6", callback_data="lang_uk"),
+        InlineKeyboardButton(text="English \U0001f1ec\U0001f1e7", callback_data="lang_en"),
     ]])
 
-LANG_CHOOSE_TEXT = STRINGS["pl"]["lang_choose"]
+LANG_CHOOSE_TEXT = STRINGS["en"]["lang_choose"]
 
 # ============ BOT HANDLERS ============
 dp = Dispatcher()
@@ -149,7 +150,7 @@ async def start(message: Message):
 async def language_cmd(message: Message):
     await message.answer(LANG_CHOOSE_TEXT, reply_markup=lang_keyboard())
 
-@dp.callback_query(F.data.in_({"lang_pl", "lang_uk"}))
+@dp.callback_query(F.data.in_({"lang_pl", "lang_uk", "lang_en"}))
 async def set_language(callback: CallbackQuery):
     lang = callback.data.split("_")[1]
     save_lang(callback.from_user.id, lang)
