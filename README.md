@@ -1,6 +1,6 @@
 # 🔍 Persuasion Bot
 
-Telegram bot that detects 23 persuasion techniques in text using a fine-tuned XLM-RoBERTa-large model. Analyzes text paragraph by paragraph. Supports Polish and Ukrainian.
+Telegram bot that detects 23 persuasion techniques in text using a fine-tuned XLM-RoBERTa-large model. Analyzes text paragraph by paragraph. Supports English, Polish and Ukrainian.
 
 ## Demo
 
