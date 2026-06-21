@@ -1,5 +1,5 @@
 """
-Telegram bot — persuasion technique detector (PL/UK).
+Telegram bot — persuasion technique detector (PL/UK/EN).
 """
 import asyncio
 import json
@@ -57,77 +57,77 @@ assert len(LABELS) == len(THRESHOLDS)
 logging.info("Model ready (device: %s).", device)
 
 
-def podziel_na_chunki(tekst: str) -> list:
+def split_into_chunks(text: str) -> list:
     """Splits a long paragraph into chunks by sentence, max MAX_CHUNK_CHARS characters."""
-    if len(tekst) <= MAX_CHUNK_CHARS:
-        return [tekst]
-    zdania = re.split(r'(?<=[.!?])\s+', tekst)
-    chunki, obecny = [], ""
-    for zdanie in zdania:
-        if obecny and len(obecny) + len(zdanie) + 1 > MAX_CHUNK_CHARS:
-            chunki.append(obecny.strip())
-            obecny = zdanie
+    if len(text) <= MAX_CHUNK_CHARS:
+        return [text]
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    chunks, current = [], ""
+    for sentence in sentences:
+        if current and len(current) + len(sentence) + 1 > MAX_CHUNK_CHARS:
+            chunks.append(current.strip())
+            current = sentence
         else:
-            obecny = (obecny + " " + zdanie).strip() if obecny else zdanie
-    if obecny:
-        chunki.append(obecny.strip())
-    return chunki if chunki else [tekst]
+            current = (current + " " + sentence).strip() if current else sentence
+    if current:
+        chunks.append(current.strip())
+    return chunks if chunks else [text]
 
 
-def klasyfikuj_z_podzialem(tekst: str) -> list:
+def classify_with_chunking(text: str) -> list:
     """Classifies a paragraph with silent chunk splitting. Returns max probability per class."""
-    chunki = podziel_na_chunki(tekst)
-    if len(chunki) == 1:
-        return klasyfikuj_akapit(tekst)
-    maks = {}
-    for chunk in chunki:
-        for nazwa, p in klasyfikuj_akapit(chunk):
-            maks[nazwa] = max(maks.get(nazwa, 0.0), p)
-    return sorted(maks.items(), key=lambda x: -x[1])
+    chunks = split_into_chunks(text)
+    if len(chunks) == 1:
+        return classify_paragraph(text)
+    best = {}
+    for chunk in chunks:
+        for label, p in classify_paragraph(chunk):
+            best[label] = max(best.get(label, 0.0), p)
+    return sorted(best.items(), key=lambda x: -x[1])
 
 
 @torch.no_grad()
-def klasyfikuj_akapit(tekst: str):
-    enc = tokenizer(tekst, truncation=True, max_length=MAX_LENGTH, return_tensors="pt").to(device)
+def classify_paragraph(text: str):
+    enc = tokenizer(text, truncation=True, max_length=MAX_LENGTH, return_tensors="pt").to(device)
     probs = torch.sigmoid(model(**enc).logits)[0].cpu().numpy()
-    wykryte = [(LABELS[i], float(probs[i])) for i in range(len(LABELS)) if probs[i] >= THRESHOLDS[i]]
-    return sorted(wykryte, key=lambda x: -x[1])
+    detected = [(LABELS[i], float(probs[i])) for i in range(len(LABELS)) if probs[i] >= THRESHOLDS[i]]
+    return sorted(detected, key=lambda x: -x[1])
 
-def poziom(p: float, s: dict) -> str:
+def confidence_level(p: float, s: dict) -> str:
     if p >= 0.80: return s["high"]
     if p >= 0.60: return s["medium"]
     return s["low"]
 
-def analizuj(tekst: str, lang: str) -> str:
+def analyze(text: str, lang: str) -> str:
     s = STRINGS[lang]
-    opisy = OPISY[lang]
-    akapity = [p.strip() for p in tekst.split("\n\n") if p.strip()]
-    if not akapity:
+    descriptions = OPISY[lang]
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    if not paragraphs:
         return s["no_text"]
 
-    bloki = []
-    wykryte_wszystkie = set()
-    for i, akapit in enumerate(akapity, 1):
-        wykryte = klasyfikuj_z_podzialem(akapit)
-        podglad = (akapit[:70] + "...") if len(akapit) > 70 else akapit
-        if wykryte:
-            techniki = "\n".join(
-                f"  • {nazwa} — {s['confidence']} {poziom(p, s)} ({p:.0%})"
-                for nazwa, p in wykryte
+    blocks = []
+    all_detected = set()
+    for i, paragraph in enumerate(paragraphs, 1):
+        detected = classify_with_chunking(paragraph)
+        preview = (paragraph[:70] + "...") if len(paragraph) > 70 else paragraph
+        if detected:
+            techniques = "\n".join(
+                f"  • {label} — {s['confidence']} {confidence_level(p, s)} ({p:.0%})"
+                for label, p in detected
             )
-            bloki.append(f"{s['paragraph']} {i}: [{podglad}]\n{techniki}")
-            wykryte_wszystkie.update(nazwa for nazwa, _ in wykryte)
+            blocks.append(f"{s['paragraph']} {i}: [{preview}]\n{techniques}")
+            all_detected.update(label for label, _ in detected)
         else:
-            bloki.append(f"{s['paragraph']} {i}: [{podglad}]\n  {s['no_technique']}")
+            blocks.append(f"{s['paragraph']} {i}: [{preview}]\n  {s['no_technique']}")
 
-    wynik = "\n\n".join(bloki)
-    if wykryte_wszystkie:
-        legenda = "\n".join(
-            f"  • {nazwa}: {opisy.get(nazwa, '')}\n"
-            for nazwa in LABELS if nazwa in wykryte_wszystkie
+    result = "\n\n".join(blocks)
+    if all_detected:
+        legend = "\n".join(
+            f"  • {label}: {descriptions.get(label, '')}\n"
+            for label in LABELS if label in all_detected
         )
-        wynik += "\n\n" + "─" * 15 + "\n" + s["legend_title"] + "\n\n" + legenda
-    return wynik
+        result += "\n\n" + "─" * 15 + "\n" + s["legend_title"] + "\n\n" + legend
+    return result
 
 # ============ LANGUAGE SELECTION KEYBOARD ============
 def lang_keyboard() -> InlineKeyboardMarkup:
@@ -166,13 +166,13 @@ async def techniques_cmd(message: Message):
         await message.answer(LANG_CHOOSE_TEXT, reply_markup=lang_keyboard())
         return
     s = STRINGS[lang]
-    opisy = OPISY[lang]
-    linie = [s["help_title"] + "\n"]
-    for nazwa, opis in opisy.items():
-        linie.append(f"- {nazwa}:\n  {opis}")
-    tekst = "\n\n".join(linie)
-    for i in range(0, len(tekst), TG_LIMIT):
-        await message.answer(tekst[i:i + TG_LIMIT])
+    descriptions = OPISY[lang]
+    lines = [s["help_title"] + "\n"]
+    for name, description in descriptions.items():
+        lines.append(f"- {name}:\n  {description}")
+    text = "\n\n".join(lines)
+    for i in range(0, len(text), TG_LIMIT):
+        await message.answer(text[i:i + TG_LIMIT])
 
 @dp.message(Command("example"))
 async def example_cmd(message: Message):
@@ -181,10 +181,10 @@ async def example_cmd(message: Message):
         await message.answer(LANG_CHOOSE_TEXT, reply_markup=lang_keyboard())
         return
     s = STRINGS[lang]
-    przyklad = EXAMPLES[lang]
-    await message.answer(f"{s['example_intro']}\n\n{przyklad}")
-    wynik = await asyncio.to_thread(analizuj, przyklad, lang)
-    await message.answer(f"{s['example_result_intro']}\n\n{wynik}")
+    sample = EXAMPLES[lang]
+    await message.answer(f"{s['example_intro']}\n\n{sample}")
+    result = await asyncio.to_thread(analyze, sample, lang)
+    await message.answer(f"{s['example_result_intro']}\n\n{result}")
 
 @dp.message(Command("model"))
 async def model_cmd(message: Message):
@@ -195,7 +195,7 @@ async def model_cmd(message: Message):
     await message.answer(STRINGS[lang]["about"])
 
 @dp.message()
-async def obsluga(message: Message):
+async def handle_message(message: Message):
     if not message.text:
         return
     lang = get_lang(message.from_user.id)
@@ -205,13 +205,13 @@ async def obsluga(message: Message):
     s = STRINGS[lang]
     await message.answer(s["analyzing"])
     try:
-        wynik = await asyncio.to_thread(analizuj, message.text, lang)
+        result = await asyncio.to_thread(analyze, message.text, lang)
     except Exception as e:
         logging.error("Error during analysis: %s", e)
         await message.answer(s["error"])
         return
-    for i in range(0, len(wynik), TG_LIMIT):
-        await message.answer(wynik[i:i + TG_LIMIT])
+    for i in range(0, len(result), TG_LIMIT):
+        await message.answer(result[i:i + TG_LIMIT])
 
 async def main():
     bot = Bot(BOT_TOKEN)
